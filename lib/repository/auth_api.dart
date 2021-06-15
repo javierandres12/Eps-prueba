@@ -8,7 +8,6 @@ class AuthApi{
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
-
   // metodo de SignIn con google
   Future<FirebaseUser> signIn() async {
     GoogleSignInAccount googleSignInAccount =

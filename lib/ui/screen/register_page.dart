@@ -68,7 +68,7 @@ class _RegisterPage extends State<RegisterPage>{
                           Container(
                             alignment: Alignment.bottomCenter,
                             padding: EdgeInsets.only(bottom: 5),
-                            child:  Text('Ingresa a Eps con tu cuenta', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),),
+                            child:  Text('Ingresa con tu cuenta', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),),
                           ),
                           Padding(padding: EdgeInsets.only(top: 10)),
                           ButtonApp(

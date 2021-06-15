@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
@@ -26,37 +27,37 @@ class ButtonApp extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        margin: EdgeInsets.all(3),
+        margin: EdgeInsets.all(5),
         height: 40,
-
         decoration: BoxDecoration(
           color: Color(color1),
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(10.0),
         ),
 
-        child: Center(
-          child: Container(
-            margin: EdgeInsets.all(3),
-            child:  Row(
-              children: [
-                Padding(padding: EdgeInsets.only(right: 20)),
-                Icon(iconData,
-                  color: Colors.white,
-                  size: 40,
+        child: Container(
+          alignment: Alignment.center,
+          margin: EdgeInsets.all(3),
+          child:  Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(padding: EdgeInsets.only(right: 20)),
+              Icon(iconData,
+                color: Colors.white,
+                size: 25,
+              ),
+              Padding(padding: EdgeInsets.only(left: 10)),
+              Text(
+                buttonText,
+                style: TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.white
                 ),
-                Padding(padding: EdgeInsets.only(left: 10)),
-                Text(
-                  buttonText,
-                  style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.white
-                  ),
 
-                ),
-              ],
+              ),
+            ],
 
-            ),
-          )
+          ),
         ),
 
       ),

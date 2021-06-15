@@ -30,6 +30,9 @@ dependencies:
   generic_bloc_provider: ^1.0.9
   cached_network_image: ^2.3.3
   material_design_icons_flutter: ^4.0.5345
+  barcode_scan: ^3.0.1
+  image_picker:
+  firebase_ml_vision: ^0.9.4
 
 
   # The following adds the Cupertino Icons font to your application.
