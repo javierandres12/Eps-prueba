@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class CardMonitor extends StatefulWidget {
+class CardBomba extends StatefulWidget {
   String result;
   List listaDatos;
-  CardMonitor({
+  CardBomba({
     @required this.listaDatos,
     @required this.result
   });
@@ -12,19 +12,19 @@ class CardMonitor extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
 
-    return _CardMonitor();
+    return _CardBomba();
   }
 
 }
 
-class _CardMonitor extends State<CardMonitor>{
+class _CardBomba extends State<CardBomba>{
 
   String NombreDescripcion;
 
   @override
   Widget build(BuildContext context) {
 
-    if(widget.listaDatos.isEmpty){
+    /*if(widget.listaDatos.isEmpty){
       if(widget.result.isEmpty){
         return Container();
       }else{
@@ -205,13 +205,25 @@ class _CardMonitor extends State<CardMonitor>{
         );
       }
 
+    }*/
+    if(widget.result.isEmpty){
+      return Container();
+    }else{
+      return  Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Color(0xFFFFF7E2),
+              boxShadow: [
+                BoxShadow(
+                    color:Colors.red,
+                    blurRadius: 2
+                )
+              ]
+          ),
+          padding: EdgeInsets.all(2),
+          margin: EdgeInsets.all(3),
+          child: Text(widget.result)
+      );
     }
-
-
-
-
-
-
-
   }
 }

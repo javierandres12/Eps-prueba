@@ -1,6 +1,6 @@
 
 import 'dart:io';
-import 'package:eps/ui/widget/card_monitor.dart';
+import 'package:eps/ui/widget/card_bomba.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,19 +8,18 @@ import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 
 
 
-class DetailScreen extends StatefulWidget{
+class DetailScreenBomba extends StatefulWidget{
 
 
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _DetailScreen();
+    return _DetailScreenBomba();
   }
 }
 
-class _DetailScreen extends State<DetailScreen>{
-  int colorFront=0xFF3B4C71;//0xFF93D3CB
+class _DetailScreenBomba extends State<DetailScreenBomba>{
   List listaDatos=[];
   String selectedItem= "";
   var result = "";
@@ -28,6 +27,7 @@ class _DetailScreen extends State<DetailScreen>{
   var imageFile;
   bool isImageLoaded = false;
   int colorAppbar=0xFF5574E4;
+  int colorFront=0xFF3B4C71;//0xFF93D3CB
 
 
   getImageFromGallery() async {
@@ -36,7 +36,6 @@ class _DetailScreen extends State<DetailScreen>{
       pickedImage=File(tempStore.path);
       isImageLoaded=true;
     });
-
   }
 
   getImageFromCamera() async {
@@ -71,49 +70,14 @@ class _DetailScreen extends State<DetailScreen>{
           // Same getters as TextBlock
           print(element.text);
           setState(() {
-            result = result +' '+ element.text;
+            result = result +'\n '+ element.text;
           });
-          if(element.text.length<=3 && element.text.length>1 ){
-            try{
-              int numero = int.parse(element.text);
-              listaDa.add(numero.toString());
-              setState(() {
-                listaDatos=listaDa;
-              });
-              print(listaDatos);
-            }catch(e){
-              print('error no entero :${element.text}');
-            }
-          }
 
         }
       }
 
     }
 
-    /*for(TextBlock block in readText.blocks){
-      for(TextLine line in block.lines){
-        for(TextElement word in line.elements){
-          setState(() {
-            result = result +' '+ word.text;
-          });
-          print(word.text.characters);
-          print(result);
-          /*if(word.text.length<=3){
-            try{
-              int numero = int.parse(word.text);
-              listaDa.add(numero.toString());
-              setState(() {
-                listaDatos=listaDa;
-              });
-              print(listaDatos);
-            }catch(e){
-              print('error no entero :${word.text}');
-            }
-          }*/
-        }
-      }
-    }*/
 
   }
 
@@ -136,7 +100,7 @@ class _DetailScreen extends State<DetailScreen>{
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(colorFront),
-        title: Text('Captura Monitor',style: TextStyle(color: Colors.white),),
+        title: Text('Captura Bomba Inf.',style: TextStyle(color: Colors.white),),
         centerTitle: true,
         leading:  IconButton(icon: Icon(Icons.arrow_back,color: Colors.white,), onPressed: (){
           Navigator.pop(context);
@@ -172,10 +136,10 @@ class _DetailScreen extends State<DetailScreen>{
             ),
           ) : Container(),
           Container(
-              margin: EdgeInsets.all(20),
-              padding: EdgeInsets.all(20),
+              margin: EdgeInsets.only(left: 20,right: 20,bottom: 20),
+              padding: EdgeInsets.only(left: 20,right: 20,bottom: 20),
               alignment: Alignment.center,
-              child: CardMonitor(
+              child: CardBomba(
                 listaDatos: listaDatos,
                 result: result,
               )

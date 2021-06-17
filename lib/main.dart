@@ -1,10 +1,8 @@
 
 
-import 'package:eps/ui/screen/register_page.dart';
+import 'package:eps/ui/screen/login_page_barras.dart';
 import 'package:flutter/material.dart';
-import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 
-import 'bloc/bloc_user.dart';
 
 
 void main() {
@@ -16,18 +14,15 @@ class EpsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return BlocProvider(
-        child: MaterialApp(
-            title: 'BlogApp',
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-              primaryColor: Color(0xFF2EBFF7),
-              accentColor: Colors.blueAccent,
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-            ),
-            home: RegisterPage()
+    return MaterialApp(
+        title: 'Monitor Ospedale',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          primaryColor: Color(0xFF2EBFF7),
+          accentColor: Colors.blueAccent,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        bloc: UserBloc()
+        home: LoginPageBarras()
     );
   }
 }
