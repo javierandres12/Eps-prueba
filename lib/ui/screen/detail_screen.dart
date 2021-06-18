@@ -21,13 +21,16 @@ class DetailScreen extends StatefulWidget{
 
 class _DetailScreen extends State<DetailScreen>{
   int colorFront=0xFF3B4C71;//0xFF93D3CB
-  List listaDatos=[];
+  List listaDatosTotal=[];
+  List listaDatosLetras=[];
   String selectedItem= "";
   var result = "";
   File pickedImage;
   var imageFile;
   bool isImageLoaded = false;
   int colorAppbar=0xFF5574E4;
+  String valueChoose;
+  List item=['Dragger Infinity Vista XL','Mindray iMEC12'];
 
 
   getImageFromGallery() async {
@@ -56,7 +59,8 @@ class _DetailScreen extends State<DetailScreen>{
     VisionText readText = await recognizeText.processImage(myImage);
     //VisionText readText = await  cloudTextRecognizer.processImage(myImage);
 
-    List listaDa=new List();
+    List listaTotal=new List();
+    List listaDatos=new List();
 
     String text = readText.text;
     for (TextBlock block in readText.blocks) {
@@ -70,50 +74,27 @@ class _DetailScreen extends State<DetailScreen>{
         for (TextElement element in line.elements) {
           // Same getters as TextBlock
           print(element.text);
+          listaTotal.add(element.text);
+          setState(() {
+            listaDatosTotal=listaTotal;
+          });
           setState(() {
             result = result +' '+ element.text;
           });
-          if(element.text.length<=3 && element.text.length>1 ){
-            try{
-              int numero = int.parse(element.text);
-              listaDa.add(numero.toString());
-              setState(() {
-                listaDatos=listaDa;
-              });
-              print(listaDatos);
-            }catch(e){
-              print('error no entero :${element.text}');
-            }
+          print(result);
+          print(listaDatosLetras);
+          if(element.text.length<=4 && element.text.length>1 ){
+            listaDatos.add(element.text);
+            setState(() {
+              listaDatosLetras=listaDatos;
+            });
           }
 
         }
       }
 
     }
-
-    /*for(TextBlock block in readText.blocks){
-      for(TextLine line in block.lines){
-        for(TextElement word in line.elements){
-          setState(() {
-            result = result +' '+ word.text;
-          });
-          print(word.text.characters);
-          print(result);
-          /*if(word.text.length<=3){
-            try{
-              int numero = int.parse(word.text);
-              listaDa.add(numero.toString());
-              setState(() {
-                listaDatos=listaDa;
-              });
-              print(listaDatos);
-            }catch(e){
-              print('error no entero :${word.text}');
-            }
-          }*/
-        }
-      }
-    }*/
+    
 
   }
 
@@ -134,6 +115,7 @@ class _DetailScreen extends State<DetailScreen>{
 
 
     return Scaffold(
+      key: _scaffoldkey,
       appBar: AppBar(
         backgroundColor: Color(colorFront),
         title: Text('Captura Monitor',style: TextStyle(color: Colors.white),),
@@ -158,7 +140,39 @@ class _DetailScreen extends State<DetailScreen>{
       ),
       body: ListView(
         children: [
-          SizedBox(height: 100),
+          /*Container(
+            margin: EdgeInsets.only(left: 5,right: 5,top: 8,bottom: 5),
+            width: screenWidht-30,
+            height: 40,
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 3,
+                    color: Color(colorFront),
+                  )
+                ]
+            ),
+            child: DropdownButton(
+                hint: Text('Seleccinar Monitor'),
+                value: valueChoose,
+                isExpanded: true,
+                autofocus: true,
+                items: item.map((valueItem){
+                  return DropdownMenuItem(
+                    value: valueItem,
+                    child: Text(valueItem),
+                  );
+                }).toList(),
+                onChanged: (newValue){
+                  setState(() {
+                    valueChoose = newValue;
+                  });
+                }
+            ),
+          ),*/
           isImageLoaded ? Center(
             child: Container(
               height: screenHeight/1.8,
@@ -176,7 +190,9 @@ class _DetailScreen extends State<DetailScreen>{
               padding: EdgeInsets.all(20),
               alignment: Alignment.center,
               child: CardMonitor(
-                listaDatos: listaDatos,
+                listaDatos: listaDatosTotal,
+                listaDatosLetras: listaDatosLetras,
+                ReferenciaMonitor: valueChoose,
                 result: result,
               )
           )
