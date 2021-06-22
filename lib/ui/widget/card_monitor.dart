@@ -40,14 +40,14 @@ class _CardMonitor extends State<CardMonitor>{
     if(widget.listaDatos.isNotEmpty){
       print(widget.listaDatos);
 
-      if( widget.listaDatos.indexOf('Dräger')!=-1 &&
+      if( //widget.listaDatos.indexOf('Dräger')!=-1 &&
           widget.listaDatos.indexOf('Infinity')!=-1 &&
           widget.listaDatos.indexOf('Vista')!=-1 &&
           widget.listaDatos.indexOf('XL')!=-1 ){//si es un Drager Infinity Vista XL
         setState(() {
           itemFc = (widget.listaDatosLetras.indexOf('FC')-1);
-          itemSpO2 = (widget.listaDatosLetras.indexOf('Sp02')+1);
-          itemPLS= (widget.listaDatosLetras.indexOf('Sp02')+2);
+          itemSpO2 = (widget.listaDatosLetras.indexOf('FC')+1);
+          itemPLS= (widget.listaDatosLetras.indexOf('FC')+2);
           itemRESP=(widget.listaDatosLetras.indexOf('PSN')-2);
           itemPSN=(widget.listaDatosLetras.indexOf('PSN')-1);
         });

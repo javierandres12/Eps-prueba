@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 
 
@@ -24,6 +25,7 @@ class _DetailScreenBomba extends State<DetailScreenBomba>{
   String selectedItem= "";
   var result = "";
   File pickedImage;
+  File imagenRecortada;
   var imageFile;
   bool isImageLoaded = false;
   int colorAppbar=0xFF5574E4;
@@ -34,22 +36,79 @@ class _DetailScreenBomba extends State<DetailScreenBomba>{
     var tempStore = await ImagePicker().getImage(source: ImageSource.gallery);
     setState(() {
       pickedImage=File(tempStore.path);
-      isImageLoaded=true;
     });
+    File cropped = await ImageCropper.cropImage(
+        sourcePath: pickedImage.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9,
+          CropAspectRatioPreset.ratio5x4
+        ],
+        compressQuality: 100,
+        cropStyle: CropStyle.rectangle,
+        compressFormat: ImageCompressFormat.jpg,
+        androidUiSettings: AndroidUiSettings(
+          toolbarTitle: 'Editar Imagen',
+          toolbarColor: Color(colorFront),
+          statusBarColor: Color(colorFront),
+          lockAspectRatio: false,
+          toolbarWidgetColor: Colors.white,
+
+        )
+    );
+    setState(() {
+      imagenRecortada=cropped;
+    });
+    if(imagenRecortada!=null){
+      setState(() {
+        isImageLoaded=true;
+      });
+    }
   }
 
   getImageFromCamera() async {
     var tempStore = await ImagePicker().getImage(source: ImageSource.camera);
     setState(() {
       pickedImage=File(tempStore.path);
-      isImageLoaded=true;
     });
+    File cropped = await ImageCropper.cropImage(
+        sourcePath: pickedImage.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9,
+          CropAspectRatioPreset.ratio5x4
+        ],
+        compressQuality: 100,
+        cropStyle: CropStyle.rectangle,
+        compressFormat: ImageCompressFormat.jpg,
+        androidUiSettings: AndroidUiSettings(
+          toolbarTitle: 'Editar Imagen',
+          toolbarColor: Color(colorFront),
+          statusBarColor: Color(colorFront),
+          toolbarWidgetColor: Colors.white,
+          lockAspectRatio: false
+        )
+    );
+    setState(() {
+      imagenRecortada=cropped;
+    });
+    if(imagenRecortada!=null){
+      setState(() {
+        isImageLoaded=true;
+      });
+    }
 
   }
 
   readTextFromAnImage()  async{
 
-    FirebaseVisionImage myImage = FirebaseVisionImage.fromFile(pickedImage);
+    FirebaseVisionImage myImage = FirebaseVisionImage.fromFile(imagenRecortada);
     TextRecognizer recognizeText = FirebaseVision.instance.textRecognizer();
     TextRecognizer cloudTextRecognizer = FirebaseVision.instance.cloudTextRecognizer();
     VisionText readText = await recognizeText.processImage(myImage);
@@ -129,7 +188,7 @@ class _DetailScreenBomba extends State<DetailScreenBomba>{
               width: screenWidht,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: FileImage(pickedImage),
+                    image: FileImage(imagenRecortada),
 
                   )
               ),

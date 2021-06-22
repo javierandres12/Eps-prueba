@@ -93,6 +93,7 @@ class _LoginPageBarras extends State<LoginPageBarras>{
         });
         print('barras: ${idScaner},id_clinica: ${item}, status: ${response.statusCode}');
         print(jsonLogin);
+
         if(response.statusCode==200){
           _scaffoldkey.currentState.removeCurrentSnackBar();
           _scaffoldkey.currentState.showSnackBar(SnackBar(content: Text('Bienvenido'),duration: Duration(seconds: 1),backgroundColor: Color(colorSnackbar)));
