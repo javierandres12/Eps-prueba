@@ -4,7 +4,7 @@ import 'package:eps/ui/widget/card_bomba.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 
@@ -107,8 +107,35 @@ class _DetailScreenBomba extends State<DetailScreenBomba>{
   }
 
   readTextFromAnImage()  async{
+    final inputImage = InputImage.fromFile(imagenRecortada);
+    final textDetector = GoogleMlKit.vision.textDetector();
+    //final textDetector1 = GoogleMlKit.vision.;
+    final RecognisedText recognisedText = await textDetector.processImage(inputImage);
+    //final RecognisedText ksjdfnd = await
 
-    FirebaseVisionImage myImage = FirebaseVisionImage.fromFile(imagenRecortada);
+    List listaTotal=new List();
+    List listaDatos=new List();
+
+    String text = recognisedText.text;
+    for (TextBlock block in recognisedText.blocks) {
+      final Rect rect = block.rect;
+      final List<Offset> cornerPoints = block.cornerPoints;
+      final String text = block.text;
+      final List<String> languages = block.recognizedLanguages;
+
+      for (TextLine line in block.lines) {
+        // Same getters as TextBlock
+        for (TextElement element in line.elements) {
+          // Same getters as TextBlock
+          print(element.text);
+          setState(() {
+            result = result +'\n '+ element.text;
+          });
+        }
+      }
+    }
+
+    /*FirebaseVisionImage myImage = FirebaseVisionImage.fromFile(imagenRecortada);
     TextRecognizer recognizeText = FirebaseVision.instance.textRecognizer();
     TextRecognizer cloudTextRecognizer = FirebaseVision.instance.cloudTextRecognizer();
     VisionText readText = await recognizeText.processImage(myImage);
@@ -135,7 +162,7 @@ class _DetailScreenBomba extends State<DetailScreenBomba>{
         }
       }
 
-    }
+    }*/
 
 
   }
