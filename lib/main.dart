@@ -16,6 +16,7 @@ class EpsApp extends StatelessWidget {
 
     return MaterialApp(
         title: 'Monitor Ospedale',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
           primaryColor: Color(0xFF2EBFF7),

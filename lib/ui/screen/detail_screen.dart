@@ -24,6 +24,7 @@ class _DetailScreen extends State<DetailScreen>{
   int colorFront=0xFF3B4C71;//0xFF93D3CB
   List listaDatosTotal=[];
   List listaDatosLetras=[];
+  List listaNumerica=[];
   String selectedItem= "";
   var result = "";
   File pickedImage;
@@ -115,24 +116,24 @@ class _DetailScreen extends State<DetailScreen>{
     FirebaseVisionImage myImage = FirebaseVisionImage.fromFile(imagenRecortada);
     TextRecognizer recognizeText = FirebaseVision.instance.textRecognizer();
     TextRecognizer cloudTextRecognizer = FirebaseVision.instance.cloudTextRecognizer();
-    //VisionText readText = await recognizeText.processImage(myImage);
-    VisionText readText = await  cloudTextRecognizer.processImage(myImage);
+    VisionText readText = await recognizeText.processImage(myImage);
+    //VisionText readText = await  cloudTextRecognizer.processImage(myImage);
 
     List listaTotal=new List();
     List listaDatos=new List();
+    List listaDatosNume=new List();
 
-    String text = readText.text;
+
     for (TextBlock block in readText.blocks) {
       final Rect boundingBox = block.boundingBox;
       final List<Offset> cornerPoints = block.cornerPoints;
       final String text = block.text;
       final List<RecognizedLanguage> languages = block.recognizedLanguages;
-
       for (TextLine line in block.lines) {
         // Same getters as TextBlock
         for (TextElement element in line.elements) {
           // Same getters as TextBlock
-          print(element.text);
+          //print(element.text);
           listaTotal.add(element.text);
           setState(() {
             listaDatosTotal=listaTotal;
@@ -140,13 +141,31 @@ class _DetailScreen extends State<DetailScreen>{
           setState(() {
             result = result +' '+ element.text;
           });
-          print(result);
-          print(listaDatosLetras);
+          //print(result);
+          //print(listaDatosLetras);
           if(element.text.length<=4 && element.text.length>1 ){
             listaDatos.add(element.text);
             setState(() {
               listaDatosLetras=listaDatos;
             });
+          }
+          if(element.text.length<=4 && element.text.length>1 ){
+            try{
+              int numero = int.parse(element.text.toString());
+
+
+              if(listaDatosNume.indexOf(numero)==-1){
+              listaDatosNume.add(numero);
+              setState(() {
+                listaNumerica=listaDatosNume;
+              });
+
+              }
+
+              //print(listaNumerica);
+            }catch(e){
+
+            }
           }
 
         }
@@ -251,6 +270,7 @@ class _DetailScreen extends State<DetailScreen>{
               child: CardMonitor(
                 listaDatos: listaDatosTotal,
                 listaDatosLetras: listaDatosLetras,
+                listaNumerica: listaNumerica,
                 ReferenciaMonitor: valueChoose,
                 result: result,
               )
