@@ -1,4 +1,8 @@
+import 'package:eps/db/databaserec.dart';
+import 'package:eps/ui/screen/registrar_monitor.dart';
+import 'package:eps/ui/widget/button_app.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
 
 class CardMonitor extends StatefulWidget {
   String result;
@@ -6,6 +10,7 @@ class CardMonitor extends StatefulWidget {
   List listaDatosLetras;
   List listaNumerica;
   String ReferenciaMonitor;
+  File imagenRecortada;
 
 
   CardMonitor({
@@ -13,7 +18,8 @@ class CardMonitor extends StatefulWidget {
     @required this.result,
     @required this.listaDatosLetras,
     @required this.ReferenciaMonitor,
-    @required this.listaNumerica
+    @required this.listaNumerica,
+    @required this.imagenRecortada
   });
 
 
@@ -26,6 +32,10 @@ class CardMonitor extends StatefulWidget {
 }
 
 class _CardMonitor extends State<CardMonitor>{
+
+  //color del boton
+  int colorBoton=0xFF3B4C71;
+
   //variables de dragger Infinity vista XL
   int itemFc;
   int itemSpO2;
@@ -33,6 +43,7 @@ class _CardMonitor extends State<CardMonitor>{
   int itemRESP;
   int itemPNI;
   int itemPLS;
+
 
   //infinity vista XL
   //primera forma de mostrar los datos
@@ -43,6 +54,20 @@ class _CardMonitor extends State<CardMonitor>{
   bool PSN;
   int orderPSN;
   String NombreDescripcion;
+  List DatosMonitor;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration(microseconds: 1)).then((value) async{
+      var datosMonitor= await DataBaseREC.MonitorRegistrado(/*identifiacion1, identifiacion2, identifiacion3*/);
+      setState(() {
+        DatosMonitor=datosMonitor;
+      });
+      print('datos.....: ${DatosMonitor}');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -737,202 +762,175 @@ class _CardMonitor extends State<CardMonitor>{
         }
 
 
+      }else if(DatosMonitor.isNotEmpty){//si no esta parametrizado y se va a buscar el parametro en la base de datos
+        print('funciona');
+        print(widget.listaDatosLetras[int.parse(DatosMonitor[0]['operacionECG'])]);
+        print(DatosMonitor[0]['identificacionM1']);
+        //if(DatosMonitor[0]['identificacionM1'])
+        if(widget.listaDatos.indexOf(DatosMonitor[0]['identificacionM1'])!=-1 &&
+            widget.listaDatos.indexOf(DatosMonitor[0]['identificacionM2'])!=-1 &&
+            widget.listaDatos.indexOf(DatosMonitor[0]['identificacionM3'])!=-1 ){
+
+          setState(() {
+            itemFc = int.parse(DatosMonitor[0]['operacionECG']);
+            itemSpO2 = int.parse(DatosMonitor[0]['operacionSP02']);
+            itemRESP= int.parse(DatosMonitor[0]['operacionRESP']);
+          });
+          return  Container(
+              width: (MediaQuery.of(context).size.width)/2,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Color(0xFFFFF7E2),
+                  boxShadow: [
+                    BoxShadow(
+                        color:Colors.red,
+                        blurRadius: 2
+                    )
+                  ]
+              ),
+              padding: EdgeInsets.all(5),
+              margin: EdgeInsets.all(5),
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 2, right: 2,bottom: 5),
+                    padding: EdgeInsets.only(bottom: 0.5),
+                    child: Text(
+                      'Monitor ${DatosMonitor[0]['identificacionM1']} ${DatosMonitor[0]['identificacionM2']} ${DatosMonitor[0]['identificacionM3']}',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15,
+                          color: Colors.black),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 2, right: 2),
+                    padding: EdgeInsets.only(bottom: 0.5),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Text(
+                            'FC:',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 15,
+                                color: Colors.black),
+                          ),
+                          alignment: Alignment.topLeft,
+                        ),
+                        Container(
+                          alignment: Alignment.topRight,
+                          child: Text(
+                            '${widget.listaDatosLetras[itemFc]}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 15,
+                                color: Colors.black),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 2, right: 2),
+                    padding: EdgeInsets.only(bottom: 0.5),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Text(
+                            'Sp02:',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 15,
+                                color: Colors.black),
+                          ),
+                          alignment: Alignment.topLeft,
+                        ),
+                        Container(
+                          alignment: Alignment.topRight,
+                          child: Text(
+                            '${widget.listaDatosLetras[itemSpO2].toString().substring(0,2)}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 15,
+                                color: Colors.black),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 2, right: 2),
+                    padding: EdgeInsets.only(bottom: 0.5),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Text(
+                            'RESP:',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 15,
+                                color: Colors.black),
+                          ),
+                          alignment: Alignment.topLeft,
+                        ),
+                        Container(
+                          alignment: Alignment.topRight,
+                          child: Text(
+                            '${widget.listaDatosLetras[itemRESP]}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 15,
+                                color: Colors.black),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              )
+          );
+        }else{
+          return Container(
+            child: Text('en proceso'),
+          );
+        }
+
       }else{
         return Center(
-          child: Text('Falta registrar monitor'),
+          child: Container(
+            child: Column(
+              children: [
+                Text('Falta registrar monitor'),
+                ButtonApp(
+                    buttonText: 'Registrar',
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> RegistrarMonitorScreen(
+                          listaNumerica: widget.listaNumerica,
+                          listaDatosLetras: widget.listaDatosLetras,
+                          listaDatos: widget.listaDatos,
+                          imagenRecortada: widget.imagenRecortada)
+                      ));
+                    },
+                    color1: colorBoton,
+                    color2: colorBoton,
+                    iconData: Icons.app_registration
+                ),
+              ],
+            ),
+          ),
         );
       }
 
     }else{
       return Container();
     }
-
-
-
-    /*if(widget.listaDatos.isEmpty){
-      if(widget.result.isEmpty){
-        return Container();
-      }else{
-        return  Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Color(0xFFFFF7E2),
-                boxShadow: [
-                  BoxShadow(
-                      color:Colors.red,
-                      blurRadius: 2
-                  )
-                ]
-            ),
-            padding: EdgeInsets.all(2),
-            margin: EdgeInsets.all(3),
-            child: Text(widget.result)
-        );
-      }
-
-    }else{
-
-      if(widget.listaDatos.length>=5){
-        return  Container(
-            width: (MediaQuery.of(context).size.width)/2,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Color(0xFFFFF7E2),
-                boxShadow: [
-                  BoxShadow(
-                      color:Colors.red,
-                      blurRadius: 2
-                  )
-                ]
-            ),
-            padding: EdgeInsets.all(5),
-            margin: EdgeInsets.all(5),
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 2, right: 2),
-                  padding: EdgeInsets.only(bottom: 0.5),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        child: Text(
-                          'FC:',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
-                              color: Colors.black),
-                        ),
-                        alignment: Alignment.topLeft,
-                      ),
-                      Container(
-                        alignment: Alignment.topRight,
-                        child: Text(
-                          '${widget.listaDatos[1]}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 15,
-                              color: Colors.black),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 2, right: 2),
-                  padding: EdgeInsets.only(bottom: 0.5),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        child: Text(
-                          'Sp02:',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
-                              color: Colors.black),
-                        ),
-                        alignment: Alignment.topLeft,
-                      ),
-                      Container(
-                        alignment: Alignment.topRight,
-                        child: Text(
-                          '${widget.listaDatos[2]}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 15,
-                              color: Colors.black),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 2, right: 2),
-                  padding: EdgeInsets.only(bottom: 0.5),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        child: Text(
-                          'PLS:',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
-                              color: Colors.black),
-                        ),
-                        alignment: Alignment.topLeft,
-                      ),
-                      Container(
-                        alignment: Alignment.topRight,
-                        child: Text(
-                          '${widget.listaDatos[3]}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 15,
-                              color: Colors.black),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 2, right: 2),
-                  padding: EdgeInsets.only(bottom: 0.5),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        child: Text(
-                          'RESP:',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
-                              color: Colors.black),
-                        ),
-                        alignment: Alignment.topLeft,
-                      ),
-                      Container(
-                        alignment: Alignment.topRight,
-                        child: Text(
-                          '${widget.listaDatos[4]}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 15,
-                              color: Colors.black),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            )
-        );
-      }else{
-        return  Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Color(0xFFFFF7E2),
-                boxShadow: [
-                  BoxShadow(
-                      color:Colors.red,
-                      blurRadius: 2
-                  )
-                ]
-            ),
-            padding: EdgeInsets.all(2),
-            margin: EdgeInsets.all(3),
-            child: Text(widget.result)
-        );
-      }
-
-    }*/
-
-
 
 
 

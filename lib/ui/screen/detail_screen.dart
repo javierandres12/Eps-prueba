@@ -272,6 +272,7 @@ class _DetailScreen extends State<DetailScreen>{
                 listaDatosLetras: listaDatosLetras,
                 listaNumerica: listaNumerica,
                 ReferenciaMonitor: valueChoose,
+                imagenRecortada: imagenRecortada,
                 result: result,
               )
           )
