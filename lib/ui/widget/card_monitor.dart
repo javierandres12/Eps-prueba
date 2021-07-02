@@ -61,6 +61,7 @@ class _CardMonitor extends State<CardMonitor>{
     // TODO: implement initState
     super.initState();
     Future.delayed(Duration(microseconds: 1)).then((value) async{
+      //DataBaseREC.BorrarDatos();
       var datosMonitor= await DataBaseREC.MonitorRegistrado(/*identifiacion1, identifiacion2, identifiacion3*/);
       setState(() {
         DatosMonitor=datosMonitor;
@@ -588,7 +589,7 @@ class _CardMonitor extends State<CardMonitor>{
           );
         }
 
-      }else if(widget.listaDatos.indexOf('mindray')!=-1 &&
+      }/*else if(widget.listaDatos.indexOf('mindray')!=-1 &&
           widget.listaDatos.indexOf('MEC-1200')!=-1 ){// si es un mindray iPM-9800
 
         try{
@@ -762,140 +763,151 @@ class _CardMonitor extends State<CardMonitor>{
         }
 
 
-      }else if(DatosMonitor.isNotEmpty){//si no esta parametrizado y se va a buscar el parametro en la base de datos
+      }*/else if(DatosMonitor.isNotEmpty){//si no esta parametrizado y se va a buscar el parametro en la base de datos
         print('funciona');
         print(widget.listaDatosLetras[int.parse(DatosMonitor[0]['operacionECG'])]);
         print(DatosMonitor[0]['identificacionM1']);
         //if(DatosMonitor[0]['identificacionM1'])
-        if(widget.listaDatos.indexOf(DatosMonitor[0]['identificacionM1'])!=-1 &&
+        if( (widget.listaDatos.indexOf(DatosMonitor[0]['identificacionM1'])!=-1 &&
             widget.listaDatos.indexOf(DatosMonitor[0]['identificacionM2'])!=-1 &&
-            widget.listaDatos.indexOf(DatosMonitor[0]['identificacionM3'])!=-1 ){
+            widget.listaDatos.indexOf(DatosMonitor[0]['identificacionM3'])!=-1) ||
+            (widget.listaDatos.indexOf(DatosMonitor[0]['identificacionM1'])!=-1 &&
+                widget.listaDatos.indexOf(DatosMonitor[0]['identificacionM2'])!=-1)){
 
-          setState(() {
-            itemFc = int.parse(DatosMonitor[0]['operacionECG']);
-            itemSpO2 = int.parse(DatosMonitor[0]['operacionSP02']);
-            itemRESP= int.parse(DatosMonitor[0]['operacionRESP']);
-          });
-          return  Container(
-              width: (MediaQuery.of(context).size.width)/2,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Color(0xFFFFF7E2),
-                  boxShadow: [
-                    BoxShadow(
-                        color:Colors.red,
-                        blurRadius: 2
-                    )
-                  ]
-              ),
-              padding: EdgeInsets.all(5),
-              margin: EdgeInsets.all(5),
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 2, right: 2,bottom: 5),
-                    padding: EdgeInsets.only(bottom: 0.5),
-                    child: Text(
-                      'Monitor ${DatosMonitor[0]['identificacionM1']} ${DatosMonitor[0]['identificacionM2']} ${DatosMonitor[0]['identificacionM3']}',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                          color: Colors.black),
+          print(DatosMonitor[0]['largoVector']);
+          print(widget.listaNumerica.length);
+
+          if(DatosMonitor[0]['largoVector']==widget.listaNumerica.length.toString()){
+            setState(() {
+              itemFc = int.parse(DatosMonitor[0]['operacionECG']);
+              itemSpO2 = int.parse(DatosMonitor[0]['operacionSP02']);
+              itemRESP= int.parse(DatosMonitor[0]['operacionRESP']);
+            });
+            return  Container(
+                width: (MediaQuery.of(context).size.width)/2,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Color(0xFFFFF7E2),
+                    boxShadow: [
+                      BoxShadow(
+                          color:Colors.red,
+                          blurRadius: 2
+                      )
+                    ]
+                ),
+                padding: EdgeInsets.all(5),
+                margin: EdgeInsets.all(5),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 2, right: 2,bottom: 5),
+                      padding: EdgeInsets.only(bottom: 0.5),
+                      child: Text(
+                        'Monitor ${DatosMonitor[0]['identificacionM1']} ${DatosMonitor[0]['identificacionM2']} ${(DatosMonitor[0]['identificacionM3'].toString()=="null")?"":DatosMonitor[0]['identificacionM3']}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                            color: Colors.black),
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 2, right: 2),
-                    padding: EdgeInsets.only(bottom: 0.5),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Text(
-                            'FC:',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15,
-                                color: Colors.black),
+                    Container(
+                      margin: EdgeInsets.only(left: 2, right: 2),
+                      padding: EdgeInsets.only(bottom: 0.5),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Text(
+                              'FC:',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15,
+                                  color: Colors.black),
+                            ),
+                            alignment: Alignment.topLeft,
                           ),
-                          alignment: Alignment.topLeft,
-                        ),
-                        Container(
-                          alignment: Alignment.topRight,
-                          child: Text(
-                            '${widget.listaDatosLetras[itemFc]}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                fontSize: 15,
-                                color: Colors.black),
-                          ),
-                        )
-                      ],
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                              '${widget.listaNumerica[itemFc]}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 15,
+                                  color: Colors.black),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 2, right: 2),
-                    padding: EdgeInsets.only(bottom: 0.5),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Text(
-                            'Sp02:',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15,
-                                color: Colors.black),
+                    Container(
+                      margin: EdgeInsets.only(left: 2, right: 2),
+                      padding: EdgeInsets.only(bottom: 0.5),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Text(
+                              'Sp02:',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15,
+                                  color: Colors.black),
+                            ),
+                            alignment: Alignment.topLeft,
                           ),
-                          alignment: Alignment.topLeft,
-                        ),
-                        Container(
-                          alignment: Alignment.topRight,
-                          child: Text(
-                            '${widget.listaDatosLetras[itemSpO2].toString().substring(0,2)}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                fontSize: 15,
-                                color: Colors.black),
-                          ),
-                        )
-                      ],
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                              '${widget.listaNumerica[itemSpO2]}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 15,
+                                  color: Colors.black),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 2, right: 2),
-                    padding: EdgeInsets.only(bottom: 0.5),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Text(
-                            'RESP:',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15,
-                                color: Colors.black),
+                    Container(
+                      margin: EdgeInsets.only(left: 2, right: 2),
+                      padding: EdgeInsets.only(bottom: 0.5),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Text(
+                              'RESP:',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15,
+                                  color: Colors.black),
+                            ),
+                            alignment: Alignment.topLeft,
                           ),
-                          alignment: Alignment.topLeft,
-                        ),
-                        Container(
-                          alignment: Alignment.topRight,
-                          child: Text(
-                            '${widget.listaDatosLetras[itemRESP]}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                fontSize: 15,
-                                color: Colors.black),
-                          ),
-                        )
-                      ],
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                              '${widget.listaNumerica[itemRESP]}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 15,
+                                  color: Colors.black),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              )
-          );
+                  ],
+                )
+            );
+          }else{
+            return Container(
+              child: Text('Los datos de la imagen no son suficientes para procesarla, por favor intenta de nuevo.'),
+            );
+          }
         }else{
           return Container(
             child: Text('en proceso'),

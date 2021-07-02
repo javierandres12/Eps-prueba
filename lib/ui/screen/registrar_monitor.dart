@@ -202,7 +202,7 @@ class _RegistrarMonitorScreen extends State<RegistrarMonitorScreen>{
                       }
                   ),
                 ),
-                Container(
+                /*Container(
                   child: Text('Parametro de reconocimiento [FC,ECG,SP02...]',style: TextStyle(color: Colors.white),),
                 ),
                 Container(
@@ -271,7 +271,7 @@ class _RegistrarMonitorScreen extends State<RegistrarMonitorScreen>{
                         });
                       }
                   ),
-                ),
+                ),*/
                 Container(
                   child: Text('Valor ECG',style: TextStyle(color: Colors.white),),
                 ),
@@ -294,7 +294,7 @@ class _RegistrarMonitorScreen extends State<RegistrarMonitorScreen>{
                       hint: Text('ECG'),
                       value: valueChooseOperacionECG,
                       isExpanded: true,
-                      items: widget.listaDatosLetras.map((valueItem){
+                      items: widget.listaNumerica.map((valueItem){
                         return DropdownMenuItem(
                           value: valueItem,
                           child: Text(valueItem),
@@ -329,7 +329,7 @@ class _RegistrarMonitorScreen extends State<RegistrarMonitorScreen>{
                       hint: Text('SP02'),
                       value: valueChooseOperacionSP02,
                       isExpanded: true,
-                      items: widget.listaDatosLetras.map((valueItem){
+                      items: widget.listaNumerica.map((valueItem){
                         return DropdownMenuItem(
                           value: valueItem,
                           child: Text(valueItem),
@@ -364,7 +364,7 @@ class _RegistrarMonitorScreen extends State<RegistrarMonitorScreen>{
                       hint: Text('RESP'),
                       value: valueChooseOperacionRESP,
                       isExpanded: true,
-                      items: widget.listaDatosLetras.map((valueItem){
+                      items: widget.listaNumerica.map((valueItem){
                         return DropdownMenuItem(
                           value: valueItem,
                           child: Text(valueItem),
@@ -389,9 +389,9 @@ class _RegistrarMonitorScreen extends State<RegistrarMonitorScreen>{
           onPressed: (){
             if(valueChooseIdM1!=null &&
                 valueChooseIdM2!=null &&
-                valueChooseIdM3!=null &&
-                valueChooseParametroMonitorFijo!=null &&
-                valueChooseParametroOperacion!=null &&
+                //valueChooseIdM3!=null &&
+                //valueChooseParametroMonitorFijo!=null &&
+                //valueChooseParametroOperacion!=null &&
                 valueChooseOperacionECG!=null &&
                 valueChooseOperacionSP02!=null &&
                 valueChooseOperacionRESP!=null ){
@@ -400,21 +400,24 @@ class _RegistrarMonitorScreen extends State<RegistrarMonitorScreen>{
               print(valueChooseIdM2);
               print(valueChooseIdM3);
               print(valueChooseParametroMonitorFijo);
-              print(widget.listaDatosLetras.indexOf(valueChooseOperacionECG));
-              print(widget.listaDatosLetras.indexOf(valueChooseOperacionSP02));
-              print(widget.listaDatosLetras.indexOf(valueChooseOperacionRESP));
+              print(widget.listaNumerica.indexOf(valueChooseOperacionECG));
+              print(widget.listaNumerica.indexOf(valueChooseOperacionSP02));
+              print(widget.listaNumerica.indexOf(valueChooseOperacionRESP));
+              print(widget.listaNumerica.length.toString());
 
               DataBaseREC.guardarRegistroMonitor(
                   RegistroMonitorData(
-                      identificacionM1: valueChooseIdM1,
-                      identificacionM2: valueChooseIdM2,
-                      identificacionM3: valueChooseIdM3,
-                      parametroMonitorFijo: valueChooseParametroMonitorFijo,
-                      parametroOperacion: valueChooseParametroOperacion,
-                      operacionECG: widget.listaDatosLetras.indexOf(valueChooseOperacionECG).toString(),
-                      operacionSP02: widget.listaDatosLetras.indexOf(valueChooseOperacionSP02).toString(),
+                      identificacionM1: valueChooseIdM1.toString(),
+                      identificacionM2: valueChooseIdM2.toString(),
+                      identificacionM3: valueChooseIdM3.toString(),
+                      parametroMonitorFijo: valueChooseParametroMonitorFijo.toString(),
+                      parametroOperacion: valueChooseParametroOperacion.toString(),
+                      operacionECG: widget.listaNumerica.indexOf(valueChooseOperacionECG).toString(),
+                      operacionSP02: widget.listaNumerica.indexOf(valueChooseOperacionSP02).toString(),
                       operacionPSN: valueChooseOperacionECG.toString(),
-                      operacionRESP: widget.listaDatosLetras.indexOf(valueChooseOperacionRESP).toString())
+                      operacionRESP: widget.listaNumerica.indexOf(valueChooseOperacionRESP).toString(),
+                      largoVector: widget.listaNumerica.length.toString()
+                  )
               );
               Navigator.pop(context);
               Navigator.pop(context);

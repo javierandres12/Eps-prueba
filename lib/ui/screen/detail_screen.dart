@@ -155,7 +155,7 @@ class _DetailScreen extends State<DetailScreen>{
 
 
               if(listaDatosNume.indexOf(numero)==-1){
-              listaDatosNume.add(numero);
+              listaDatosNume.add(numero.toString());
               setState(() {
                 listaNumerica=listaDatosNume;
               });

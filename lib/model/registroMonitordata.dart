@@ -12,6 +12,7 @@ class RegistroMonitorData{
   String operacionSP02;
   String operacionPSN;
   String operacionRESP;
+  String largoVector;
 
 
   RegistroMonitorData({
@@ -24,6 +25,7 @@ class RegistroMonitorData{
     @required this.operacionSP02,
     @required this.operacionPSN,
     @required this.operacionRESP,
+    @required this.largoVector,
     this.id
   });
 
@@ -38,7 +40,8 @@ class RegistroMonitorData{
       "operacionECG":operacionECG,
       "operacionSP02":operacionSP02,
       "operacionPSN":operacionPSN,
-      "operacionRESP":operacionRESP
+      "operacionRESP":operacionRESP,
+      "largoVector":largoVector
     };
   }
 }

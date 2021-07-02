@@ -11,7 +11,7 @@ class DataBaseREC{
         join(await getDatabasesPath(), 'core.db'),
         onCreate: (db, version)  async {
           await db.execute(
-              "CREATE TABLE registromonitores (id INTEGER PRIMARY KEY, identificacionM1 TEXT, identificacionM2 TEXT, identificacionM3 TEXT, parametroMonitorFijo TEXT, parametroOperacion TEXT, operacionECG TEXT, operacionSP02 TEXT, operacionPSN TEXT, operacionRESP TEXT)");
+              "CREATE TABLE registromonitores (id INTEGER PRIMARY KEY, identificacionM1 TEXT, identificacionM2 TEXT, identificacionM3 TEXT, parametroMonitorFijo TEXT, parametroOperacion TEXT, operacionECG TEXT, operacionSP02 TEXT, operacionPSN TEXT, operacionRESP TEXT, largoVector TEXT)");
           await db.execute(
               "CREATE TABLE dominios (id INTEGER PRIMARY KEY, dominio TEXT)");
         }, version: 1);
@@ -27,6 +27,11 @@ class DataBaseREC{
     final List<Map<String, dynamic>> monitoresRegistradosMap =
     await database.rawQuery('SELECT registromonitores.* FROM registromonitores');
     return monitoresRegistradosMap;
+  }
+
+  static BorrarDatos() async{
+    Database database = await _openDB();
+    await database.delete('registromonitores');
   }
 
 
