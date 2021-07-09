@@ -31,17 +31,17 @@ class RegistroMonitorData{
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      "identificacionM1": identificacionM1,
-      "identificacionM2":identificacionM2,
-      "identificacionM3":identificacionM3,
+      'id': id,//
+      "identificacionM1": identificacionM1,//
+      "identificacionM2":identificacionM2,//
+      "identificacionM3":identificacionM3,//
       "parametroMonitorFijo":parametroMonitorFijo,
       "parametroOperacion":parametroOperacion,
-      "operacionECG":operacionECG,
-      "operacionSP02":operacionSP02,
-      "operacionPSN":operacionPSN,
-      "operacionRESP":operacionRESP,
-      "largoVector":largoVector
+      "operacionECG":operacionECG,//
+      "operacionSP02":operacionSP02,//
+      "operacionPSN":operacionPSN,//
+      "operacionRESP":operacionRESP,//
+      "largoVector":largoVector//
     };
   }
 }

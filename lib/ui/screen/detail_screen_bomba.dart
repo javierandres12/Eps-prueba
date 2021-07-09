@@ -21,7 +21,8 @@ class DetailScreenBomba extends StatefulWidget{
 }
 
 class _DetailScreenBomba extends State<DetailScreenBomba>{
-  List listaDatos=[];
+  List ListaDatos=[];
+  List ListaNumerica=[];
   String selectedItem= "";
   var result = "";
   File pickedImage;
@@ -114,7 +115,8 @@ class _DetailScreenBomba extends State<DetailScreenBomba>{
     VisionText readText = await recognizeText.processImage(myImage);
     //VisionText readText = await  cloudTextRecognizer.processImage(myImage);
 
-    List listaDa=new List();
+    List listaDatos=new List();
+    List listaDatosNume=new List();
 
     String text = readText.text;
     for (TextBlock block in readText.blocks) {
@@ -127,10 +129,19 @@ class _DetailScreenBomba extends State<DetailScreenBomba>{
         // Same getters as TextBlock
         for (TextElement element in line.elements) {
           // Same getters as TextBlock
-          print(element.text);
+
+          listaDatos.add(element.text);
           setState(() {
-            result = result +'\n '+ element.text;
+            ListaDatos=listaDatos;
           });
+
+          try{
+            int numero = int.parse(element.text.toString());
+            listaDatosNume.add(numero.toString());
+            setState(() {
+              ListaNumerica=listaDatosNume;
+            });
+          }catch(e){}
 
         }
       }
@@ -199,8 +210,8 @@ class _DetailScreenBomba extends State<DetailScreenBomba>{
               padding: EdgeInsets.only(left: 20,right: 20,bottom: 20),
               alignment: Alignment.center,
               child: CardBomba(
-                listaDatos: listaDatos,
-                result: result,
+                listaDatos: ListaDatos,
+                listaNumerica: ListaNumerica,
               )
           )
         ],

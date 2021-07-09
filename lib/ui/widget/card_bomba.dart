@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CardBomba extends StatefulWidget {
-  String result;
+  List listaNumerica;
   List listaDatos;
+
   CardBomba({
     @required this.listaDatos,
-    @required this.result
+    @required this.listaNumerica,
   });
 
 
@@ -23,33 +24,14 @@ class _CardBomba extends State<CardBomba>{
 
   @override
   Widget build(BuildContext context) {
+    print(widget.listaNumerica);
+    print(widget.listaDatos);
 
-    /*if(widget.listaDatos.isEmpty){
-      if(widget.result.isEmpty){
-        return Container();
-      }else{
-        return  Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Color(0xFFFFF7E2),
-                boxShadow: [
-                  BoxShadow(
-                      color:Colors.red,
-                      blurRadius: 2
-                  )
-                ]
-            ),
-            padding: EdgeInsets.all(2),
-            margin: EdgeInsets.all(3),
-            child: Text(widget.result)
-        );
-      }
-
+    if(widget.listaNumerica.isEmpty || widget.listaDatos.isEmpty){
+      return Container();
     }else{
-
-      if(widget.listaDatos.length>=5){
-        return  Container(
-            width: (MediaQuery.of(context).size.width)/2,
+      if(widget.listaNumerica.length==2 && widget.listaDatos.length>=7 && widget.listaDatos.length<=9 ){
+        return Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 color: Color(0xFFFFF7E2),
@@ -65,6 +47,17 @@ class _CardBomba extends State<CardBomba>{
             child: Column(
               children: [
                 Container(
+                  margin: EdgeInsets.only(left: 2, right: 2,bottom: 5),
+                  padding: EdgeInsets.only(bottom: 0.5),
+                  child: Text(
+                    'Bomba de Infusión',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 15,
+                        color: Colors.black),
+                  ),
+                ),
+                Container(
                   margin: EdgeInsets.only(left: 2, right: 2),
                   padding: EdgeInsets.only(bottom: 0.5),
                   child: Row(
@@ -73,7 +66,7 @@ class _CardBomba extends State<CardBomba>{
                     children: [
                       Container(
                         child: Text(
-                          'FC:',
+                          'Volumen Restante:',
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 15,
@@ -84,7 +77,7 @@ class _CardBomba extends State<CardBomba>{
                       Container(
                         alignment: Alignment.topRight,
                         child: Text(
-                          '${widget.listaDatos[1]}',
+                          '${widget.listaNumerica[0]} ml',
                           style: TextStyle(
                               fontWeight: FontWeight.w300,
                               fontSize: 15,
@@ -103,7 +96,7 @@ class _CardBomba extends State<CardBomba>{
                     children: [
                       Container(
                         child: Text(
-                          'Sp02:',
+                          'Volumen Saliente:',
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 15,
@@ -114,7 +107,7 @@ class _CardBomba extends State<CardBomba>{
                       Container(
                         alignment: Alignment.topRight,
                         child: Text(
-                          '${widget.listaDatos[2]}',
+                          '${widget.listaNumerica[1]} ml',
                           style: TextStyle(
                               fontWeight: FontWeight.w300,
                               fontSize: 15,
@@ -133,7 +126,7 @@ class _CardBomba extends State<CardBomba>{
                     children: [
                       Container(
                         child: Text(
-                          'PLS:',
+                          'Velocidad:',
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 15,
@@ -144,7 +137,67 @@ class _CardBomba extends State<CardBomba>{
                       Container(
                         alignment: Alignment.topRight,
                         child: Text(
-                          '${widget.listaDatos[3]}',
+                          '${widget.listaNumerica[0]} ml / ${widget.listaDatos[3]}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 15,
+                              color: Colors.black),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            )
+        );
+      }else if(widget.listaNumerica.length==3 && widget.listaDatos.length>=11 && widget.listaDatos.length<=13 ){
+        return Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Color(0xFFFFF7E2),
+                boxShadow: [
+                  BoxShadow(
+                      color:Colors.red,
+                      blurRadius: 2
+                  )
+                ]
+            ),
+            padding: EdgeInsets.all(5),
+            margin: EdgeInsets.all(5),
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 2, right: 2,bottom: 5),
+                  padding: EdgeInsets.only(bottom: 0.5),
+                  child: Text(
+                    'Bomba de Infusión',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 15,
+                        color: Colors.black),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 2, right: 2),
+                  padding: EdgeInsets.only(bottom: 0.5),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        child: Text(
+                          'Volumen Restante:',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              color: Colors.black),
+                        ),
+                        alignment: Alignment.topLeft,
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                          '${widget.listaNumerica[0]} ml',
                           style: TextStyle(
                               fontWeight: FontWeight.w300,
                               fontSize: 15,
@@ -163,7 +216,7 @@ class _CardBomba extends State<CardBomba>{
                     children: [
                       Container(
                         child: Text(
-                          'RESP:',
+                          'Volumen Saliente:',
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 15,
@@ -174,7 +227,37 @@ class _CardBomba extends State<CardBomba>{
                       Container(
                         alignment: Alignment.topRight,
                         child: Text(
-                          '${widget.listaDatos[4]}',
+                          '${widget.listaNumerica[2]} ml',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 15,
+                              color: Colors.black),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 2, right: 2),
+                  padding: EdgeInsets.only(bottom: 0.5),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        child: Text(
+                          'Velocidad:',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              color: Colors.black),
+                        ),
+                        alignment: Alignment.topLeft,
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                          '${widget.listaNumerica[0]} ml / ${widget.listaDatos[5]}',
                           style: TextStyle(
                               fontWeight: FontWeight.w300,
                               fontSize: 15,
@@ -188,7 +271,7 @@ class _CardBomba extends State<CardBomba>{
             )
         );
       }else{
-        return  Container(
+        return Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 color: Color(0xFFFFF7E2),
@@ -199,31 +282,116 @@ class _CardBomba extends State<CardBomba>{
                   )
                 ]
             ),
-            padding: EdgeInsets.all(2),
-            margin: EdgeInsets.all(3),
-            child: Text(widget.result)
+            padding: EdgeInsets.all(5),
+            margin: EdgeInsets.all(5),
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 2, right: 2,bottom: 5),
+                  padding: EdgeInsets.only(bottom: 0.5),
+                  child: Text(
+                    'Bomba de Infusión',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 15,
+                        color: Colors.black),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 2, right: 2),
+                  padding: EdgeInsets.only(bottom: 0.5),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        child: Text(
+                          'Volumen Restante:',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              color: Colors.black),
+                        ),
+                        alignment: Alignment.topLeft,
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                          '${widget.listaNumerica[0]}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 15,
+                              color: Colors.black),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 2, right: 2),
+                  padding: EdgeInsets.only(bottom: 0.5),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        child: Text(
+                          'Volumen Saliente:',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              color: Colors.black),
+                        ),
+                        alignment: Alignment.topLeft,
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                          '${widget.listaNumerica[1]} ml',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 15,
+                              color: Colors.black),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 2, right: 2),
+                  padding: EdgeInsets.only(bottom: 0.5),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        child: Text(
+                          'Volumen Saliente:',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              color: Colors.black),
+                        ),
+                        alignment: Alignment.topLeft,
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                          '${widget.listaNumerica[0]} ml / ${widget.listaDatos[3]}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 15,
+                              color: Colors.black),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            )
         );
       }
 
-    }*/
-    if(widget.result.isEmpty){
-      return Container();
-    }else{
-      return  Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Color(0xFFFFF7E2),
-              boxShadow: [
-                BoxShadow(
-                    color:Colors.red,
-                    blurRadius: 2
-                )
-              ]
-          ),
-          padding: EdgeInsets.all(2),
-          margin: EdgeInsets.all(3),
-          child: Text(widget.result)
-      );
     }
   }
 }
