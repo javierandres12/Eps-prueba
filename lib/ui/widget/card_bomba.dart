@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class CardBomba extends StatefulWidget {
   List listaNumerica;
   List listaDatos;
+  List listaDatosVelocidad;
 
   CardBomba({
     @required this.listaDatos,
     @required this.listaNumerica,
+    @required this.listaDatosVelocidad
   });
 
 
@@ -26,6 +28,7 @@ class _CardBomba extends State<CardBomba>{
   Widget build(BuildContext context) {
     print(widget.listaNumerica);
     print(widget.listaDatos);
+    print(widget.listaDatosVelocidad);
 
     if(widget.listaNumerica.isEmpty || widget.listaDatos.isEmpty){
       return Container();
@@ -137,7 +140,7 @@ class _CardBomba extends State<CardBomba>{
                       Container(
                         alignment: Alignment.topRight,
                         child: Text(
-                          '${widget.listaNumerica[0]} ml / ${widget.listaDatos[3]}',
+                          '${widget.listaNumerica[0]} ml / ${widget.listaDatosVelocidad[0]}',
                           style: TextStyle(
                               fontWeight: FontWeight.w300,
                               fontSize: 15,
@@ -257,7 +260,7 @@ class _CardBomba extends State<CardBomba>{
                       Container(
                         alignment: Alignment.topRight,
                         child: Text(
-                          '${widget.listaNumerica[0]} ml / ${widget.listaDatos[5]}',
+                          '${widget.listaNumerica[0]} ml / ${widget.listaDatosVelocidad[0]}',
                           style: TextStyle(
                               fontWeight: FontWeight.w300,
                               fontSize: 15,
@@ -317,7 +320,7 @@ class _CardBomba extends State<CardBomba>{
                       Container(
                         alignment: Alignment.topRight,
                         child: Text(
-                          '${widget.listaNumerica[0]}',
+                          '${widget.listaNumerica[0]} ml',
                           style: TextStyle(
                               fontWeight: FontWeight.w300,
                               fontSize: 15,
@@ -366,7 +369,7 @@ class _CardBomba extends State<CardBomba>{
                     children: [
                       Container(
                         child: Text(
-                          'Volumen Saliente:',
+                          'Velocidad:',
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 15,
@@ -377,7 +380,7 @@ class _CardBomba extends State<CardBomba>{
                       Container(
                         alignment: Alignment.topRight,
                         child: Text(
-                          '${widget.listaNumerica[0]} ml / ${widget.listaDatos[3]}',
+                          '${widget.listaNumerica[0]} ml / ${widget.listaDatosVelocidad[0]}',
                           style: TextStyle(
                               fontWeight: FontWeight.w300,
                               fontSize: 15,

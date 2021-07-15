@@ -86,6 +86,7 @@ class _CardMonitor extends State<CardMonitor>{
               widget.listaDatos.indexOf('Infinity')!=-1 &&
               widget.listaDatos.indexOf('VistaXL')!=-1){//si es un Drager Infinity Vista XL
 
+
         try{
           int valorpsn = int.parse(widget.listaDatosLetras[(widget.listaDatosLetras.indexOf('PSN')+1)]);
           setState(() {
@@ -109,14 +110,14 @@ class _CardMonitor extends State<CardMonitor>{
         }
 
         if(widget.listaDatosLetras.indexOf('PSN')!=-1 &&
-            (widget.listaNumerica.indexOf(valorPSN)-4)>=0
+            (widget.listaNumerica.indexOf(valorPSN.toString())-4)>=0
             && PSN){
           setState(() {
-            itemFc=(widget.listaNumerica.indexOf(valorPSN)-4);
-            itemSpO2 = (widget.listaNumerica.indexOf(valorPSN)-3);
-            itemPLS= (widget.listaNumerica.indexOf(valorPSN)-2);
-            itemRESP=(widget.listaNumerica.indexOf(valorPSN)-1);
-            itemPSN=(widget.listaNumerica.indexOf(valorPSN));
+            itemFc=(widget.listaNumerica.indexOf(valorPSN.toString())-4);
+            itemSpO2 = (widget.listaNumerica.indexOf(valorPSN.toString())-3);
+            itemPLS= (widget.listaNumerica.indexOf(valorPSN.toString())-2);
+            itemRESP=(widget.listaNumerica.indexOf(valorPSN.toString())-1);
+            itemPSN=(widget.listaNumerica.indexOf(valorPSN.toString()));
           });
           return  Container(
               width: (MediaQuery.of(context).size.width)/2,
@@ -302,13 +303,13 @@ class _CardMonitor extends State<CardMonitor>{
         }else if(widget.listaNumerica.length<=5){
           return Center(
             child: Container(
-              child: Text('No se realizó el reconocimiento de la imagen, por favor intenta con otra'),
+              child: Text('No se realizó el reconocimiento de la imagen, por favor intenta con otra.'),
             ),
           );
         }else{
           return Center(
             child: Container(
-              child: Text('No se realizó el reconocimiento de la imagen, por favor intenta con otra'),
+              child: Text('No se realizó el reconocimiento de la imagen, por favor intenta con otra imag'),
             ),
           );
         }
@@ -589,7 +590,7 @@ class _CardMonitor extends State<CardMonitor>{
           );
         }
 
-      }/*else if(widget.listaDatos.indexOf('mindray')!=-1 &&
+      }else if(widget.listaDatos.indexOf('mindray')!=-1 &&
           widget.listaDatos.indexOf('MEC-1200')!=-1 ){// si es un mindray iPM-9800
 
         try{
@@ -630,8 +631,8 @@ class _CardMonitor extends State<CardMonitor>{
 
         if(FC){
           setState(() {
-            itemFc = (widget.listaNumerica.indexOf(valorFC));
-            itemPNI= (widget.listaNumerica.indexOf(valorFC)+1);
+            itemFc = (widget.listaNumerica.indexOf(valorFC.toString()));
+            itemPNI= (widget.listaNumerica.indexOf(valorFC.toString())+1);
             itemSpO2 = (widget.listaNumerica.length-1);
           });
           return  Container(
@@ -763,7 +764,7 @@ class _CardMonitor extends State<CardMonitor>{
         }
 
 
-      }*/else if(DatosMonitor.isNotEmpty){//si no esta parametrizado y se va a buscar el parametro en la base de datos
+      }else if(DatosMonitor.isNotEmpty){//si no esta parametrizado y se va a buscar el parametro en la base de datos
         print('funciona');
         print(widget.listaDatosLetras[int.parse(DatosMonitor[0]['operacionECG'])]);
         print(DatosMonitor[0]['identificacionM1']);

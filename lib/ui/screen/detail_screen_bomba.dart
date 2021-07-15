@@ -23,6 +23,7 @@ class DetailScreenBomba extends StatefulWidget{
 class _DetailScreenBomba extends State<DetailScreenBomba>{
   List ListaDatos=[];
   List ListaNumerica=[];
+  List ListDatosVelocidad=[];
   String selectedItem= "";
   var result = "";
   File pickedImage;
@@ -117,6 +118,7 @@ class _DetailScreenBomba extends State<DetailScreenBomba>{
 
     List listaDatos=new List();
     List listaDatosNume=new List();
+    List listaDatosVel=new List();
 
     String text = readText.text;
     for (TextBlock block in readText.blocks) {
@@ -134,6 +136,13 @@ class _DetailScreenBomba extends State<DetailScreenBomba>{
           setState(() {
             ListaDatos=listaDatos;
           });
+
+          if(element.text.length==5){
+            listaDatosVel.add(element.text);
+            setState(() {
+              ListDatosVelocidad=listaDatosVel;
+            });
+          }
 
           try{
             int numero = int.parse(element.text.toString());
@@ -212,6 +221,7 @@ class _DetailScreenBomba extends State<DetailScreenBomba>{
               child: CardBomba(
                 listaDatos: ListaDatos,
                 listaNumerica: ListaNumerica,
+                listaDatosVelocidad: ListDatosVelocidad,
               )
           )
         ],
