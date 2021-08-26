@@ -33,6 +33,9 @@ class CardMonitor extends StatefulWidget {
 
 class _CardMonitor extends State<CardMonitor>{
 
+  bool activarMonitor = false;
+  List datosIdentificadores =[];
+
   //color del boton
   int colorBoton=0xFF3B4C71;
 
@@ -56,22 +59,87 @@ class _CardMonitor extends State<CardMonitor>{
   String NombreDescripcion;
   List DatosMonitor;
 
-  @override
+  Future activar() async{
+    Future.delayed(Duration(microseconds: 1)).then((value) async{
+      //DataBaseREC.BorrarDatos();
+      var ParametrosMonitor = await DataBaseREC.ParametrosRegistradosMonitores();
+      setState(() {
+        datosIdentificadores=ParametrosMonitor;
+      });
+
+      for(int n=0;n<datosIdentificadores.length;n++){
+        for(int i=0;i<widget.listaDatos.length;i++){
+          if(widget.listaDatos[i].toString()==datosIdentificadores[n]['identificacionM1']){
+            print('identiM1 true');
+            for(int k=0;k<widget.listaDatos.length;k++){
+              if(widget.listaDatos[k].toString()==datosIdentificadores[n]['identificacionM2']){
+                print('identiM2 true');
+                for(int l=0;l<widget.listaDatos.length;l++){
+                  if(widget.listaDatos[l].toString()==datosIdentificadores[n]['identificacionM3'] || datosIdentificadores[n]['identificacionM3'].toString().trim()=='null') {
+                    print('identiM2 true');
+                    var datosMonitor= await DataBaseREC.MonitorRegistrado(
+                        datosIdentificadores[n]['identificacionM1'].toString().trim(),
+                        datosIdentificadores[n]['identificacionM2'].toString().trim(),
+                        datosIdentificadores[n]['identificacionM3'].toString().trim());
+                    setState(() {
+                      DatosMonitor=datosMonitor;
+                      activarMonitor=true;
+                    });
+                    print('datos.....: ${DatosMonitor}');
+                    break;
+                  }else{
+                    print('datos...sin..: ${DatosMonitor}');
+                  }
+                }
+              }
+            }
+          }
+        }
+
+      }
+
+    });
+  }
+
+  /*@override
   void initState() {
     // TODO: implement initState
     super.initState();
     Future.delayed(Duration(microseconds: 1)).then((value) async{
       //DataBaseREC.BorrarDatos();
-      var datosMonitor= await DataBaseREC.MonitorRegistrado(/*identifiacion1, identifiacion2, identifiacion3*/);
-      setState(() {
-        DatosMonitor=datosMonitor;
-      });
-      print('datos.....: ${DatosMonitor}');
+      var ParametrosMonitor = await DataBaseREC.ParametrosRegistradosMonitores();
+      print('Param.....: ${ParametrosMonitor}');
+      print('..p.. ${widget.listaNumerica}');
+      for(int i=0;i<widget.listaDatos.length;i++){
+        if(widget.listaDatos[i].toString()==ParametrosMonitor['identificacionM1']){
+          print('identiM1 true');
+          for(int k=0;k<widget.listaDatos.length;k++){
+            if(widget.listaDatos[k].toString()==ParametrosMonitor['identificacionM2']){
+              print('identiM2 true');
+              for(int l=0;l<widget.listaDatos.length;l++){
+                if(widget.listaDatos[l].toString()==ParametrosMonitor['identificacionM3'] || ParametrosMonitor['identificacionM3'].toString().trim()=='null') {
+                  print('identiM2 true');
+                  var datosMonitor= await DataBaseREC.MonitorRegistrado(/*identifiacion1, identifiacion2, identifiacion3*/);
+                  setState(() {
+                    DatosMonitor=datosMonitor;
+                  });
+                  print('datos.....: ${DatosMonitor}');
+                  break;
+                }else{
+                  print('datos.....: ${DatosMonitor}');
+                }
+              }
+            }
+          }
+        }
+      }
+
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
+
 
 
     if(widget.listaDatos.isNotEmpty){
@@ -590,7 +658,7 @@ class _CardMonitor extends State<CardMonitor>{
           );
         }
 
-      }else if(widget.listaDatos.indexOf('mindray')!=-1 &&
+      }/*else if(widget.listaDatos.indexOf('mindray')!=-1 &&
           widget.listaDatos.indexOf('MEC-1200')!=-1 ){// si es un mindray iPM-9800
 
         try{
@@ -764,7 +832,7 @@ class _CardMonitor extends State<CardMonitor>{
         }
 
 
-      }else if(DatosMonitor.isNotEmpty){//si no esta parametrizado y se va a buscar el parametro en la base de datos
+      }*/else if(/*DatosMonitor.isNotEmpty &&*/ activarMonitor){//si no esta parametrizado y se va a buscar el parametro en la base de datos
         print('funciona');
         print(widget.listaDatosLetras[int.parse(DatosMonitor[0]['operacionECG'])]);
         print(DatosMonitor[0]['identificacionM1']);
@@ -916,6 +984,7 @@ class _CardMonitor extends State<CardMonitor>{
         }
 
       }else{
+        activar();
         return Center(
           child: Container(
             child: Column(

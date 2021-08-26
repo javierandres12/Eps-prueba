@@ -1,6 +1,8 @@
 
 
 import 'package:eps/ui/screen/login_page_barras.dart';
+import 'package:eps/ui/screen/pabellon_screen.dart';
+import 'package:eps/ui/screen/principal_screen.dart';
 import 'package:flutter/material.dart';
 
 
@@ -23,7 +25,7 @@ class EpsApp extends StatelessWidget {
           accentColor: Colors.blueAccent,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: LoginPageBarras()
+        home: /*PrincipalScreen(token: 'token', listID: [], listItem: [])*/LoginPageBarras()
     );
   }
 }

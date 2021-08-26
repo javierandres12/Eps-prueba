@@ -1,6 +1,5 @@
-
 import 'dart:convert';
-import 'package:barcode_scan/barcode_scan.dart';
+import 'package:eps/ui/screen/pabellon_screen.dart';
 import 'package:eps/ui/screen/principal_screen.dart';
 import 'package:eps/ui/widget/button_app.dart';
 import 'package:eps/ui/widget/button_sign.dart';
@@ -20,9 +19,8 @@ class LoginPageEmail extends StatefulWidget {
 
 class _LoginPageEmail extends State<LoginPageEmail> {
   //TaskDataBase db = TaskDataBase();
-  int colorFront=0xFF3B4C71;
-  int colorSnackbar=0xFF93D3CB;
-  ScanResult scanResult;
+  int colorFront = 0xFF3B4C71;
+  int colorSnackbar = 0xFF93D3CB;
   String idScaner;
   String valueChoose;
   List listItem = [];
@@ -30,8 +28,8 @@ class _LoginPageEmail extends State<LoginPageEmail> {
   List listItemPabe = [];
   List listIDPabe = [];
   Map<String, dynamic> jsonPabellon;
-  String Dominio="https://dev-ams.portubien.co";
-
+  //String Dominio = "https://dev-ams.portubien.co";
+  String Dominio = "http://190.14.240.149/MonitorAPI";
 
   final _formkey = GlobalKey<FormState>();
   final _scaffoldkey = GlobalKey<ScaffoldState>();
@@ -51,8 +49,7 @@ class _LoginPageEmail extends State<LoginPageEmail> {
               Padding(padding: EdgeInsets.all(2)),
               Text('Verificando Datos')
             ],
-          )
-      ),
+          )),
       backgroundColor: Color(colorSnackbar),
       duration: Duration(minutes: 10),
     ));
@@ -78,22 +75,22 @@ class _LoginPageEmail extends State<LoginPageEmail> {
       });
 
       //Uri url = Uri.https(Dominio, "api/login");
-      Uri url = Uri.parse('${Dominio}/api/login');
+      //Uri url = Uri.parse('${Dominio}/api/login');
+      Uri url = Uri.parse('${Dominio}/api/LoginEmail');
       Map data = {
         'email': _user,
         'password': _password,
-        'id_clinica': id_clinica
+        //'id_clinica': id_clinica
       };
       final response = await http.post(url,
           headers: {"Content-Type": "application/x-www-form-urlencoded"},
           body: {"json": json.encode(data)});
 
-
       //print('status: ${response.statusCode}');
       setState(() {
         jsonLogin = json.decode(response.body);
       });
-      //print(response.body);
+      print(response.body);
       //print(id_clinica);
 
       if (response.statusCode == 200) {
@@ -103,40 +100,50 @@ class _LoginPageEmail extends State<LoginPageEmail> {
             duration: Duration(seconds: 1),
             backgroundColor: Color(colorSnackbar)));
 
-
-        //Uri url1 = Uri.https(Dominio, "api/getListPabellones");
-        Uri url1 = Uri.parse('${Dominio}/api/getListPabellones');
-        final responsePabellon = await http.get(url1,
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-              "Authorization": 'Bearer ${jsonLogin['token']}',
-            }
-        );
+        //Uri url1 = Uri.https(Dominio, "api/getListPabellones");api/TPabellones
+        //Uri url1 = Uri.parse('${Dominio}/api/getListPabellones');
+        Uri url1 = Uri.parse('${Dominio}/api/TPabellones');
+        final responsePabellon = await http.get(url1, headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Authorization": 'Bearer ${jsonLogin['token']}',
+        });
 
         //print(json.decode(responsePabellon.body));
         setState(() {
-          jsonPabellon= json.decode(responsePabellon.body);
+          jsonPabellon = json.decode(responsePabellon.body);
         });
 
         print('Pabellones: ${jsonPabellon}');
         var lstPabe = new List();
         var lstItePabe = new List();
-        for (int i = 0; i < jsonPabellon['data'].length; i++) {
+        /*for (int i = 0; i < jsonPabellon['data'].length; i++) {
           lstPabe.add(jsonPabellon['data'][i]['MPNomP']);
           lstItePabe.add(jsonPabellon['data'][i]['MPCodP']);
           if (lstPabe.length == jsonPabellon['data'].length) {
             listIDPabe = lstItePabe;
             listItemPabe = lstPabe;
           }
+        }*/
+
+        for (int i = 0; i < jsonPabellon.length; i++) {
+          lstPabe.add(jsonPabellon[i]['MPNomP']);
+          lstItePabe.add(jsonPabellon[i]['MPCodP']);
+          if (lstPabe.length == jsonPabellon.length) {
+            listIDPabe = lstItePabe;
+            listItemPabe = lstPabe;
+          }
         }
-        //print('ListaPabellon: ${lstPabe}');
+        print('ListaPabellon: ${lstPabe}');
 
-
+        //Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) =>PrincipalScreen(token: 'Bearer ${jsonLogin['token']}',listID: listIDPabe,listItem: listItemPabe,)));
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    PrincipalScreen(token: 'Bearer ${jsonLogin['token']}',listID: listIDPabe,listItem: listItemPabe,)));
+                builder: (context) => PabellonScreen(
+                      token: 'Bearer ${jsonLogin['token']}',
+                      listID: listIDPabe,
+                      listItem: listItemPabe,
+                    )));
       } else {
         _scaffoldkey.currentState.removeCurrentSnackBar();
         _scaffoldkey.currentState.showSnackBar(SnackBar(
@@ -162,13 +169,14 @@ class _LoginPageEmail extends State<LoginPageEmail> {
   }
 
   Future obtenerClinicas() async {
-
     //Uri url = Uri.https(Dominio, "api/getListClinicas");
-    Uri url = Uri.parse('${Dominio}/api/getListClinicas');
-
+    //Uri url = Uri.parse('${Dominio}/api/getListClinicas');
+    Uri url = Uri.parse('${Dominio}/api/Clinica');
     final response = await http.get(url);
+    //print(response.body);
     return json.decode(response.body);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -185,9 +193,18 @@ class _LoginPageEmail extends State<LoginPageEmail> {
             alignment: Alignment.topLeft,
             margin: EdgeInsets.only(top: 20),
             padding: EdgeInsets.only(top: 10),
-            child: IconButton(icon: (Icon(Icons.arrow_back,color: Colors.white,size: 30,)), onPressed:(){
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> LoginPageBarras()));
-            }),
+            child: IconButton(
+                icon: (Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                  size: 30,
+                )),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LoginPageBarras()));
+                }),
           ),
           Center(
             child: Container(
@@ -217,10 +234,18 @@ class _LoginPageEmail extends State<LoginPageEmail> {
                   } else {
                     var lst = new List();
                     var lstIte = new List();
-                    for (int i = 0; i < snapshot.data['data'].length; i++) {
+                    /*for (int i = 0; i < snapshot.data['data'].length; i++) {
                       lst.add(snapshot.data['data'][i]['cli_nombre_clinica']);
                       lstIte.add(snapshot.data['data'][i]['cli_id']);
                       if (lst.length == snapshot.data['data'].length) {
+                        listID = lstIte;
+                        listItem = lst;
+                      }
+                    }*/
+                    for (int i = 0; i < snapshot.data.length; i++) {
+                      lst.add(snapshot.data[i]['cli_nombre_clinica']);
+                      lstIte.add(snapshot.data[i]['cli_id']);
+                      if (lst.length == snapshot.data.length) {
                         listID = lstIte;
                         listItem = lst;
                       }
@@ -234,9 +259,13 @@ class _LoginPageEmail extends State<LoginPageEmail> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                child: Icon(Icons.fact_check_outlined, size: 100,color: Color(colorFront),),
+                                child: Icon(
+                                  Icons.fact_check_outlined,
+                                  size: 100,
+                                  color: Color(colorFront),
+                                ),
                                 height: 100,
-                                width: screenwidht-40,
+                                width: screenwidht - 40,
                                 margin: EdgeInsets.only(bottom: 5),
                               ),
                               Text(
@@ -248,13 +277,14 @@ class _LoginPageEmail extends State<LoginPageEmail> {
                               ),
                               Padding(padding: EdgeInsets.all(5)),
                               Container(
-                                margin: EdgeInsets.only(left: 5,right: 5,top: 2,bottom: 2),
+                                margin: EdgeInsets.only(
+                                    left: 5, right: 5, top: 2, bottom: 2),
                                 width: screenwidht - 30,
                                 height: 40,
                                 padding: EdgeInsets.all(5),
                                 decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
+                                        BorderRadius.all(Radius.circular(5)),
                                     boxShadow: [
                                       BoxShadow(
                                         color: Colors.black12,
@@ -281,10 +311,10 @@ class _LoginPageEmail extends State<LoginPageEmail> {
                                 margin: EdgeInsets.all(5),
                                 width: screenwidht - 30,
                                 height: 50,
-                                padding: EdgeInsets.only(left: 5,right: 5),
+                                padding: EdgeInsets.only(left: 5, right: 5),
                                 decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
+                                        BorderRadius.all(Radius.circular(5)),
                                     boxShadow: [
                                       BoxShadow(
                                         color: Colors.black12,
@@ -310,13 +340,13 @@ class _LoginPageEmail extends State<LoginPageEmail> {
                                 ),
                               ),
                               Container(
-                                margin:EdgeInsets.all(5),
+                                margin: EdgeInsets.all(5),
                                 width: screenwidht - 30,
                                 height: 50,
-                                padding: EdgeInsets.only(left: 5,right: 5),
+                                padding: EdgeInsets.only(left: 5, right: 5),
                                 decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
+                                        BorderRadius.all(Radius.circular(5)),
                                     boxShadow: [
                                       BoxShadow(
                                         color: Colors.black12,

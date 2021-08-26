@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:eps/ui/widget/card_bomba.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -32,6 +33,23 @@ class _DetailScreenBomba extends State<DetailScreenBomba>{
   bool isImageLoaded = false;
   int colorAppbar=0xFF5574E4;
   int colorFront=0xFF3B4C71;//0xFF93D3CB
+  FlutterLocalNotificationsPlugin localNotification;
+
+  Future GenerarNotificacion() async{
+    var androidDetails = new AndroidNotificationDetails(
+      "channelId",
+      "Notificacion prueba",
+      "Esta es una prueba para enviar la notificacion",
+      icon: '@mipmap/ic_launcher',
+      importance: Importance.max,
+      //fullScreenIntent: true,
+      //channelShowBadge: true,
+    );
+    var generalNotificationDetails = new NotificationDetails(
+        android: androidDetails
+    );
+    await localNotification.show(0, "Velocidad fuera de rango", "el medicamento se esta suministrando con una velocidad mayor a la permitida, por favor revisar el suministro.", generalNotificationDetails);
+  }
 
 
   getImageFromGallery() async {
@@ -109,6 +127,7 @@ class _DetailScreenBomba extends State<DetailScreenBomba>{
   }
 
   readTextFromAnImage()  async{
+    GenerarNotificacion();
 
     FirebaseVisionImage myImage = FirebaseVisionImage.fromFile(imagenRecortada);
     TextRecognizer recognizeText = FirebaseVision.instance.textRecognizer();
@@ -166,6 +185,15 @@ class _DetailScreenBomba extends State<DetailScreenBomba>{
   // creamos las variables para guardar los datos
 
   int color1= 0xFF2EBFF7;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    var androidInitialize = new AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettings = new InitializationSettings(android: androidInitialize);
+    localNotification= new FlutterLocalNotificationsPlugin();
+    localNotification.initialize(initializationSettings);
+  }
 
 
   @override

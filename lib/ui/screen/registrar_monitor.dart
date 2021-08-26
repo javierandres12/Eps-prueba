@@ -419,8 +419,42 @@ class _RegistrarMonitorScreen extends State<RegistrarMonitorScreen>{
                       largoVector: widget.listaNumerica.length.toString()
                   )
               );
-              Navigator.pop(context);
-              Navigator.pop(context);
+              return showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: Text(
+                        'El monitor se registro correctamente, por favor vuelva a realizar el proceso de reconocimiento.',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      title: Text(
+                        'MONITOR REGISTRADO',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'Aceptar',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            )
+                        )
+                      ],
+                    );
+                  }
+              );
             }else{
               _scaffoldkey.currentState.showSnackBar(SnackBar(content: Text('Por favor seleciona todas las opciones')));
             }

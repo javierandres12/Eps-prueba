@@ -35,6 +35,10 @@ class _DetailScreen extends State<DetailScreen>{
   String valueChoose;
   List item=['Dragger Infinity Vista XL','Mindray iMEC12'];
 
+  escanear() async {
+
+  }
+
 
   getImageFromGallery() async {
     var tempStore = await ImagePicker().getImage(source: ImageSource.gallery);

@@ -22,10 +22,17 @@ class DataBaseREC{
     return database.insert('registromonitores', registroMonitorData.toMap());
   }
 
-  static MonitorRegistrado(/*identifiacion1,identifiacion2,identifiacion3*/) async{
+  static MonitorRegistrado(identificacionM1,identificacionM2,identificacionM3) async{
     Database database = await _openDB();
     final List<Map<String, dynamic>> monitoresRegistradosMap =
     await database.rawQuery('SELECT registromonitores.* FROM registromonitores');
+    return monitoresRegistradosMap;
+  }
+
+  static ParametrosRegistradosMonitores() async{
+    Database database = await _openDB();
+    final List<Map<String, dynamic>> monitoresRegistradosMap =
+    await database.rawQuery('SELECT registromonitores.identificacionM1,registromonitores.identificacionM2,registromonitores.identificacionM3 FROM registromonitores');
     return monitoresRegistradosMap;
   }
 
